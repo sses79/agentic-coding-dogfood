@@ -1,0 +1,62 @@
+version: 1
+repository: sses79/agentic-coding-dogfood
+default_branch: main
+context:
+  enabled: true
+  classification: public
+  allowed_targets:
+    - sses79/agentic-coding-dogfood
+  allowed_model_policies:
+    - codex-sdk-openrouter-public-readonly-live
+    - codex-sdk-openrouter-public-write-proposal-live
+    - claude-agent-sdk-openrouter-public-reviewer-live
+  denied_paths:
+    - .env
+    - .env.*
+    - "*.pem"
+    - "*.key"
+    - .git/**
+    - .github/**
+    - .factory/state/**
+    - .factory/artifacts/**
+    - secrets/**
+  max_context_files: 8
+  max_context_file_bytes: 65536
+  max_context_bytes: 131072
+  allow_public_output: true
+paths:
+  writable:
+    - docs/phase-6-case-5-publication-proof.md
+  denied:
+    - .env
+    - .env.*
+    - "*.pem"
+    - "*.key"
+    - .git/**
+    - .github/**
+    - .factory/**
+    - AGENTS.md
+    - README.md
+    - check.mjs
+    - src/**
+    - secrets/**
+commands:
+  case5-test:
+    argv:
+      - node
+      - check.mjs
+    timeout_seconds: 30
+    idempotent: true
+    allowed_hosts: []
+    validation_kind: test
+    evidence_outputs: []
+required_checks:
+  - case5-test
+environment:
+  allowed_variables:
+    - PATH
+network:
+  default: deny
+pull_request:
+  draft: true
+  auto_merge: false
